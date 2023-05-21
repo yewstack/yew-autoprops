@@ -9,7 +9,7 @@ No more extra one-off Props structs!
 
 # Examples
 
-```
+```rust
 use yew_autoprops::autoprops_component;
 use yew::prelude::*;
 
@@ -25,7 +25,7 @@ fn CoolComponent(#[prop_or_default] test: &i8, smth: &usize) -> Html {
 }
 ```
 
-```
+```rust
 use yew_autoprops::autoprops_component;
 use yew::prelude::*;
 
