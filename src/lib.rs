@@ -55,6 +55,7 @@ pub fn autoprops_component(
     let mut function = parse_macro_input!(input as ItemFn);
 
     let fn_name = &function.sig.ident;
+    let visibility = &function.vis;
 
     let component_name = match args.len() {
         0 => fn_name,
@@ -124,13 +125,13 @@ pub fn autoprops_component(
 
     let tokens = quote! {
         #[derive(::yew::Properties, PartialEq)]
-        pub struct #struct_name {
+        #visibility struct #struct_name {
             #(#fields),*
         }
 
         #[::yew::function_component(#component_name)]
         #[allow(non_snake_case)]
-        fn #fn_name_outer(props: &#struct_name) -> ::yew::Html {
+        #visibility fn #fn_name_outer(props: &#struct_name) -> ::yew::Html {
 
             #[allow(non_snake_case)]
             #function
