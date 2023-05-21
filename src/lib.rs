@@ -1,3 +1,42 @@
+//! proc-macro to automatically derive Properties structs from args for Yew components
+//!
+//! No more extra one-off Props structs!
+//!
+//!
+//! # Examples
+//!
+//! ```
+//! use yew_autoprops::autoprops_component;
+//! use yew::prelude::*;
+//!
+//! #[autoprops_component]
+//! fn CoolComponent(#[prop_or_default] test: &i8, smth: &usize) -> Html {
+//!     println!("test: {}", test);
+//!
+//!     html! {
+//!         <div>
+//!             <p>{ smth }</p>
+//!         </div>
+//!     }
+//! }
+//! ```
+//!
+//! ```
+//! use yew_autoprops::autoprops_component;
+//! use yew::prelude::*;
+//!
+//! #[autoprops_component(CoolComponent)]
+//! fn cool_component(#[prop_or_default] test: &i8, smth: &usize) -> Html {
+//!     println!("test: {}", test);
+//!
+//!     html! {
+//!         <div>
+//!             <p>{ smth }</p>
+//!         </div>
+//!     }
+//! }
+//! ```
+//!
 extern crate proc_macro;
 
 use core::panic;
