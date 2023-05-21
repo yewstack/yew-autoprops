@@ -1,10 +1,15 @@
 [package]
-    name    = "yew-autoprops"
-    version = "0.1.0"
-    edition = "2021"
-    authors = ["Valentin Golev <v.golev@gmail.com"]
-
-    # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+    name          = "yew-autoprops"
+    version       = "0.1.0"
+    edition       = "2021"
+    authors       = ["Valentin Golev <v.golev@gmail.com"]
+    license       = "MIT OR Apache-2.0"
+    repository    = "https://github.com/valyagolev/yew-autoprops"
+    homepage      = "https://github.com/valyagolev/yew-autoprops"
+    documentation = "https://docs.rs/yew-autoprops/"
+    keywords      = ["web", "wasm", "frontend", "webasm", "webassembly"]
+    categories    = ["gui", "web-programming", "wasm"]
+    description   = "A proc-macro to automatically derive Properties structs from args for Yew components"
 
 [lib]
     proc-macro = true
