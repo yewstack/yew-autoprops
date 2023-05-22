@@ -52,19 +52,19 @@ pub fn autoprops_component(
 ) -> proc_macro::TokenStream {
     let args = TokenStream::from(args).into_iter().collect::<Vec<_>>();
 
-    let mut function = parse_macro_input!(input as ItemFn);
+    let function = parse_macro_input!(input as ItemFn);
 
     let fn_name = &function.sig.ident;
     let visibility = &function.vis;
 
     let component_name = match args.len() {
-        0 => fn_name,
+        0 => None,
         1 => {
             let TokenTree::Ident(name) = &args[0] else {
                 panic!("Invalid argument: {}", args[0].to_string());
             };
 
-            name
+            Some(name)
         }
         _ => panic!("Invalid arguments: {:?}", args),
     };
@@ -106,22 +106,11 @@ pub fn autoprops_component(
 
     let struct_name = syn::Ident::new(&format!("{}Props", fn_name), Span::call_site().into());
 
-    let fn_name_outer = syn::Ident::new(&format!("{}_outer", fn_name), Span::call_site().into());
-
-    let destructure_and_call = quote! {
-        let #struct_name { #(#arg_names),* } = props;
-
-        #fn_name(#(#arg_names),*)
+    let destructure = quote! {
+        #struct_name { #(#arg_names),* }
     };
 
-    for inp in &mut function.sig.inputs {
-        let pat = match inp {
-            FnArg::Typed(pat) => pat,
-            _ => panic!("Invalid argument: self?"),
-        };
-
-        pat.attrs = vec![];
-    }
+    let function_block = function.block;
 
     let tokens = quote! {
         #[derive(::yew::Properties, PartialEq)]
@@ -131,14 +120,12 @@ pub fn autoprops_component(
 
         #[::yew::function_component(#component_name)]
         #[allow(non_snake_case)]
-        #visibility fn #fn_name_outer(props: &#struct_name) -> ::yew::Html {
-
-            #[allow(non_snake_case)]
-            #function
-
-            #destructure_and_call
+        fn #fn_name(#destructure: &#struct_name) -> ::yew::Html {
+            #function_block
         }
     };
+
+    // panic!("{}", tokens.to_string());
 
     // Return the new tokens
     tokens.into()
