@@ -120,7 +120,7 @@ pub fn autoprops_component(
 
         #[::yew::function_component(#component_name)]
         #[allow(non_snake_case)]
-        fn #fn_name(#destructure: &#struct_name) -> ::yew::Html {
+        #visibility fn #fn_name(#destructure: &#struct_name) -> ::yew::Html {
             #function_block
         }
     };
