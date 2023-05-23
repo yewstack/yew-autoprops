@@ -16,6 +16,7 @@ struct NotPartialEq();
 
 #[autoprops_component]
 fn TestComponent(test_struct: &TestPEqStruct<NotPartialEq>) -> Html {
+    assert!(test_struct == test_struct);
     html! {
         <div>
             { "TestComponent" }
@@ -25,6 +26,6 @@ fn TestComponent(test_struct: &TestPEqStruct<NotPartialEq>) -> Html {
 
 fn main() {
     html! {
-        <TestComponent test_struct=&TestPEqStruct { _phantom: PhantomData } />
+        <TestComponent test_struct={TestPEqStruct { _phantom: PhantomData }} />
     };
 }
