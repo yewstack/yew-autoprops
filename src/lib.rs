@@ -56,6 +56,7 @@ pub fn autoprops_component(
 
     let fn_name = &function.sig.ident;
     let visibility = &function.vis;
+    let generics = &function.sig.generics;
 
     let component_name = match args.len() {
         0 => None,
@@ -83,28 +84,43 @@ pub fn autoprops_component(
         })
         .collect::<Vec<_>>();
 
-    let fields = function
-        .sig
-        .inputs
-        .iter()
-        .map(|input| {
-            if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = input {
-                let Type::Reference(ty) = ty.as_ref() else {
-                    panic!("Invalid argument: {} (must be a reference)", input.to_token_stream());
-                };
+    let mut fields = Vec::new();
+    let mut arg_types = Vec::new();
+    for input in function.sig.inputs.iter() {
+        if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = input {
+            let Type::Reference(ty) = ty.as_ref() else {
+                panic!(
+                    "Invalid argument: {} (must be a reference)",
+                    input.to_token_stream()
+                );
+            };
 
-                let ty = &ty.elem;
-
-                return quote! {
-                    #(#attrs)*
-                    pub #pat: #ty
-                };
-            }
+            let ty = &ty.elem;
+            fields.push(quote! {
+                #(#attrs)*
+                pub #pat: #ty
+            });
+            arg_types.push(ty.clone());
+        } else {
             panic!("Invalid argument");
-        })
-        .collect::<Vec<_>>();
+        }
+    }
+
+    let partial_eq_constraints = arg_types.iter().map(|ty| quote! { #ty: PartialEq });
 
     let struct_name = syn::Ident::new(&format!("{}Props", fn_name), Span::call_site().into());
+    let (impl_generics, ty_generics, _) = generics.split_for_impl();
+    let bounds = generics.where_clause.clone();
+
+    let where_clause = if generics.params.is_empty() {
+        quote! {}
+    } else {
+        quote! {
+            where
+                #(#partial_eq_constraints),*
+                #bounds,
+        }
+    };
 
     let destructure = quote! {
         #struct_name { #(#arg_names),* }
@@ -114,18 +130,18 @@ pub fn autoprops_component(
 
     let tokens = quote! {
         #[derive(::yew::Properties, PartialEq)]
-        #visibility struct #struct_name {
+        #visibility struct #struct_name #impl_generics #where_clause {
             #(#fields),*
         }
 
         #[::yew::function_component(#component_name)]
         #[allow(non_snake_case)]
-        fn #fn_name(#destructure: &#struct_name) -> ::yew::Html {
+        #visibility fn #fn_name #impl_generics (#destructure: &#struct_name #ty_generics) -> ::yew::Html #where_clause {
             #function_block
         }
     };
 
-    // panic!("{}", tokens.to_string());
+    // panic!("\n{}", tokens.to_string());
 
     // Return the new tokens
     tokens.into()
