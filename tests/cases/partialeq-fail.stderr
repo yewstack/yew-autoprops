@@ -12,5 +12,6 @@ note: an implementation of `PartialEq` might be missing for `NotPartialEq`
    = note: this error originates in the derive macro `PartialEq` (in Nightly builds, run with -Z macro-backtrace for more info)
 help: consider annotating `NotPartialEq` with `#[derive(PartialEq)]`
    |
-14 | #[derive(PartialEq)]
+14 + #[derive(PartialEq)]
+15 | struct NotPartialEq();
    |
