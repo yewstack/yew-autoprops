@@ -10,11 +10,9 @@
 //! use yew::prelude::*;
 //!
 //! #[autoprops_component]
-//! fn CoolComponent(#[prop_or_default] test: &i8, smth: &usize) -> Html {
-//!     println!("test: {}", test);
-//!
+//! fn CoolComponent(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
 //!     html! {
-//!         <div>
+//!         <div class={classes!(hidden.then_some("hidden"))}>
 //!             <p>{ smth }</p>
 //!         </div>
 //!     }
@@ -26,11 +24,9 @@
 //! use yew::prelude::*;
 //!
 //! #[autoprops_component(CoolComponent)]
-//! fn cool_component(#[prop_or_default] test: &i8, smth: &usize) -> Html {
-//!     println!("test: {}", test);
-//!
+//! fn cool_component(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
 //!     html! {
-//!         <div>
+//!         <div class={classes!(hidden.then_some("hidden"))}>
 //!             <p>{ smth }</p>
 //!         </div>
 //!     }
