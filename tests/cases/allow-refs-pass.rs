@@ -1,3 +1,4 @@
+use yew::prelude::*;
 use yew_autoprops::autoprops_component;
 
 #[autoprops_component]

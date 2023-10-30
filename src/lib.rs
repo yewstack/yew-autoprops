@@ -109,27 +109,30 @@ pub fn autoprops_component(
 
     let mut fields = Vec::new();
     let mut arg_types = Vec::new();
+    let mut clones = Vec::new();
+    let mut partial_eq_constraints = Vec::new();
     for input in function.sig.inputs.iter() {
         if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = input {
-            let Type::Reference(ty) = ty.as_ref() else {
-                panic!(
-                    "Invalid argument: {} (must be a reference)",
-                    input.to_token_stream()
-                );
-            };
+            let mut end_ty = ty;
 
-            let ty = &ty.elem;
+            if let Type::Reference(ty_ref) = ty.as_ref() {
+                end_ty = &ty_ref.elem;
+            } else {
+                clones.push(quote! {
+                    let #pat = #pat.clone();
+                });
+            }
+
             fields.push(quote! {
                 #(#attrs)*
-                pub #pat: #ty
+                pub #pat: #end_ty
             });
             arg_types.push(ty.clone());
+            partial_eq_constraints.push(quote! { #end_ty: PartialEq, });
         } else {
             panic!("Invalid argument");
         }
     }
-
-    let partial_eq_constraints = arg_types.iter().map(|ty| quote! { #ty: PartialEq });
 
     let (impl_generics, ty_generics, _) = generics.split_for_impl();
     let bounds = generics.where_clause.clone();
@@ -139,8 +142,8 @@ pub fn autoprops_component(
     } else {
         quote! {
             where
-                #(#partial_eq_constraints),*
-                #bounds,
+                #(#partial_eq_constraints)*
+                #bounds
         }
     };
 
@@ -159,6 +162,7 @@ pub fn autoprops_component(
         #[::yew::function_component(#component_name)]
         #[allow(non_snake_case)]
         #visibility fn #fn_name #impl_generics (#destructure: &#struct_name #ty_generics) -> ::yew::Html #where_clause {
+            #(#clones)*
             #function_block
         }
     };
