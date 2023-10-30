@@ -87,6 +87,7 @@ pub fn autoprops_component(
     let mut fields = Vec::new();
     let mut arg_types = Vec::new();
     let mut clones = Vec::new();
+    let mut partial_eq_constraints = Vec::new();
     for input in function.sig.inputs.iter() {
         if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = input {
             let mut end_ty = ty;
@@ -104,12 +105,11 @@ pub fn autoprops_component(
                 pub #pat: #end_ty
             });
             arg_types.push(ty.clone());
+            partial_eq_constraints.push(quote! { #end_ty: PartialEq, });
         } else {
             panic!("Invalid argument");
         }
     }
-
-    let partial_eq_constraints = arg_types.iter().map(|ty| quote! { #ty: PartialEq });
 
     let struct_name = syn::Ident::new(&format!("{}Props", fn_name), Span::call_site().into());
     let (impl_generics, ty_generics, _) = generics.split_for_impl();
@@ -120,8 +120,8 @@ pub fn autoprops_component(
     } else {
         quote! {
             where
-                #(#partial_eq_constraints),*
-                #bounds,
+                #(#partial_eq_constraints)*
+                #bounds
         }
     };
 
