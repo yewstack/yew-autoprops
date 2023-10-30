@@ -1,6 +1,6 @@
 [package]
     name          = "yew-autoprops"
-    version       = "0.2.2"
+    version       = "0.3.0"
     edition       = "2021"
     authors       = ["Valentin Golev <v.golev@gmail.com"]
     license       = "MIT OR Apache-2.0"
@@ -16,9 +16,9 @@
     proc-macro = true
 
 [dependencies]
-    syn         = { version = "2.0.16", features = ["full"] }
-    proc-macro2 = "1.0.58"
-    quote       = "1.0.27"
+    syn         = { version = "2", features = ["full"] }
+    proc-macro2 = "1"
+    quote       = "1"
 
 
 [dev-dependencies]
