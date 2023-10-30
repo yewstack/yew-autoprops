@@ -58,14 +58,37 @@ pub fn autoprops_component(
     let visibility = &function.vis;
     let generics = &function.sig.generics;
 
-    let component_name = match args.len() {
-        0 => None,
+    let (component_name, struct_name) = match args.len() {
+        0 => (
+            None,
+            Some(syn::Ident::new(
+                &format!("{}Props", fn_name),
+                Span::call_site().into(),
+            )),
+        ),
         1 => {
             let TokenTree::Ident(name) = &args[0] else {
                 panic!("Invalid argument: {}", args[0].to_string());
             };
 
-            Some(name)
+            (
+                Some(name),
+                Some(syn::Ident::new(
+                    &format!("{}Props", name),
+                    Span::call_site().into(),
+                )),
+            )
+        }
+        3 => {
+            let TokenTree::Ident(name) = &args[0] else {
+                panic!("Invalid argument: {}", args[0].to_string());
+            };
+
+            let TokenTree::Ident(props) = args[2].clone() else {
+                panic!("Invalid argument: {}", args[2].to_string());
+            };
+
+            (Some(name), Some(props))
         }
         _ => panic!("Invalid arguments: {:?}", args),
     };
@@ -111,7 +134,6 @@ pub fn autoprops_component(
         }
     }
 
-    let struct_name = syn::Ident::new(&format!("{}Props", fn_name), Span::call_site().into());
     let (impl_generics, ty_generics, _) = generics.split_for_impl();
     let bounds = generics.where_clause.clone();
 
