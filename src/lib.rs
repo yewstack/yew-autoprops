@@ -86,19 +86,22 @@ pub fn autoprops_component(
 
     let mut fields = Vec::new();
     let mut arg_types = Vec::new();
+    let mut clones = Vec::new();
     for input in function.sig.inputs.iter() {
         if let FnArg::Typed(PatType { pat, ty, attrs, .. }) = input {
-            let Type::Reference(ty) = ty.as_ref() else {
-                panic!(
-                    "Invalid argument: {} (must be a reference)",
-                    input.to_token_stream()
-                );
-            };
+            let mut end_ty = ty;
 
-            let ty = &ty.elem;
+            if let Type::Reference(ty_ref) = ty.as_ref() {
+                end_ty = &ty_ref.elem;
+            } else {
+                clones.push(quote! {
+                    let #pat = #pat.clone();
+                });
+            }
+
             fields.push(quote! {
                 #(#attrs)*
-                pub #pat: #ty
+                pub #pat: #end_ty
             });
             arg_types.push(ty.clone());
         } else {
@@ -137,6 +140,7 @@ pub fn autoprops_component(
         #[::yew::function_component(#component_name)]
         #[allow(non_snake_case)]
         #visibility fn #fn_name #impl_generics (#destructure: &#struct_name #ty_generics) -> ::yew::Html #where_clause {
+            #(#clones)*
             #function_block
         }
     };
