@@ -74,10 +74,7 @@ impl syn::parse::Parse for Autoprops {
             }
         }
 
-        let properties_name = syn::Ident::new(
-            &format!("{}Props", component_name),
-            proc_macro2::Span::call_site(),
-        );
+        let properties_name = quote::format_ident!("{}Props", component_name);
 
         Ok(Self {
             properties_name,
