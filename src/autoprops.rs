@@ -174,9 +174,9 @@ impl Autoprops {
             .filter_map(|arg| match arg {
                 syn::FnArg::Typed(syn::PatType { attrs, pat, ty, .. }) => match ty.as_ref() {
                     syn::Type::Reference(syn::TypeReference { elem, .. }) => {
-                        Some(quote! { #(#attrs)* #pat: #elem, })
+                        Some(quote! { #(#attrs)* #vis #pat: #elem, })
                     }
-                    _ => Some(quote! { #(#attrs)* #pat: #ty, }),
+                    _ => Some(quote! { #(#attrs)* #vis #pat: #ty, }),
                 },
                 _ => None,
             })
@@ -189,7 +189,7 @@ impl Autoprops {
         let phantom = (!type_params.is_empty()).then(|| {
             quote! {
                 #[prop_or_default]
-                phantom: ::std::marker::PhantomData <( #(#type_params),* )>,
+                #vis phantom: ::std::marker::PhantomData <( #(#type_params),* )>,
             }
         });
         let fields_eq = sig

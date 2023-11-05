@@ -107,14 +107,29 @@ fn const_generics<const N: ::std::primitive::usize>(xs: [::std::primitive::u32; 
     }
 }
 
+mod private_module {
+    #[::yew_autoprops::autoprops]
+    #[::yew::function_component(CompPrivateTest)]
+    pub fn comp_private_test(#[prop_or_default] b: ::std::primitive::bool) -> ::yew::Html
+    {
+        let _: ::std::primitive::bool = b;
+        ::yew::html! {
+            <p></p>
+        }
+    }
+}
+
+use private_module::*;
+
 fn compile_pass() {
     let _ = ::yew::html! { <CompUseFnName /> };
     let _ = ::yew::html! { <CompNoProperties /> };
     let _ = ::yew::html! { <CompNoGenerics a="foo" /> };
     let _ = ::yew::html! { <CompNoGenerics b=true a="foo" /> };
+    let _ = ::yew::html! { <CompSingleGeneric<()> /> };
     let _ = ::yew::html! { <CompGenerics<::std::primitive::bool, ::yew::AttrValue> b=true a="foo" /> };
-
     let _ = ::yew::html! { <ConstGenerics<2> xs={[1_u32, 2_u32]} /> };
+    let _ = ::yew::html! { <CompPrivateTest b=true /> };
 }
 
 fn main() {}
