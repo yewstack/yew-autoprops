@@ -20,5 +20,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: rustup default ${{ matrix.rust }}
-    - run: cargo build --verbose
     - run: cargo test --verbose
