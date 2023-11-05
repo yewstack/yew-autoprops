@@ -28,6 +28,19 @@ error: cannot use `_` as field name
 61 | fn InvalidFieldName(_: u32) -> Html {
    |                     ^
 
+error[E0412]: cannot find type `CompPrivateTest` in this scope
+  --> tests/function_component_attr/autoprops-fail.rs:83:22
+   |
+83 |     let _ = html! { <CompPrivateTest /> };
+   |                      ^^^^^^^^^^^^^^^ not found in this scope
+   |
+note: struct `crate::private_module::CompPrivateTest` exists but is inaccessible
+  --> tests/function_component_attr/autoprops-fail.rs:69:5
+   |
+69 |     #[::yew::function_component(CompPrivateTest)]
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+   = note: this error originates in the attribute macro `::yew::function_component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
 error[E0277]: the trait bound `NotClonable: Clone` is not satisfied
   --> tests/function_component_attr/autoprops-fail.rs:40:19
    |

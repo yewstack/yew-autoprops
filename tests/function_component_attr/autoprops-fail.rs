@@ -64,4 +64,21 @@ fn InvalidFieldName(_: u32) -> Html {
     }
 }
 
-fn main() {}
+mod private_module {
+    #[::yew_autoprops::autoprops]
+    #[::yew::function_component(CompPrivateTest)]
+    fn comp_private_test(#[prop_or_default] b: ::std::primitive::bool) -> ::yew::Html
+    {
+        let _: ::std::primitive::bool = b;
+        ::yew::html! {
+            <p></p>
+        }
+    }
+}
+
+#[allow(unused_imports)]
+use private_module::*;
+
+fn main() {
+    let _ = html! { <CompPrivateTest /> };
+}
