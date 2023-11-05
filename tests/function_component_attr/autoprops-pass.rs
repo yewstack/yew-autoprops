@@ -130,6 +130,15 @@ fn CompHtmlResult() -> ::yew::HtmlResult
     })
 }
 
+#[::yew_autoprops::autoprops]
+#[::yew::function_component]
+fn CompWithDefaultGeneric<T = ()>() -> ::yew::Html
+{
+    ::yew::html! {
+        <p></p>
+    }
+}
+
 fn compile_pass() {
     let _ = ::yew::html! { <CompUseFnName /> };
     let _ = ::yew::html! { <CompNoProperties /> };
@@ -140,6 +149,8 @@ fn compile_pass() {
     let _ = ::yew::html! { <ConstGenerics<2> xs={[1_u32, 2_u32]} /> };
     let _ = ::yew::html! { <CompPrivateTest b=true /> };
     let _ = ::yew::html! { <CompHtmlResult /> };
+    let _ = ::yew::html! { <CompWithDefaultGeneric /> };
+    let _ = ::yew::html! { <CompWithDefaultGeneric<u32> /> };
 }
 
 fn main() {}

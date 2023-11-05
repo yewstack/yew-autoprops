@@ -103,7 +103,7 @@ impl Autoprops {
         } = &self.item_fn;
 
         let fn_name = &sig.ident;
-        let (impl_generics, type_generics, where_clause) = sig.generics.split_for_impl();
+        let (_impl_generics, type_generics, where_clause) = sig.generics.split_for_impl();
         let inputs = if self.needs_a_properties_struct() {
             // NOTE: function components currently don't accept receivers, we're just passing the
             //       information to the next macro to fail and give its own error message
@@ -150,10 +150,11 @@ impl Autoprops {
             })
             .collect::<Vec<_>>();
         let output = &sig.output;
+        let impl_generics_with_defaults = &sig.generics;
 
         quote! {
             #(#attrs)*
-            #vis fn #fn_name #impl_generics (#inputs) #output #where_clause {
+            #vis fn #fn_name #impl_generics_with_defaults (#inputs) #output #where_clause {
                 #(#clones)*
                 #block
             }
@@ -203,10 +204,11 @@ impl Autoprops {
                 _ => None,
             })
             .collect::<Vec<_>>();
+        let impl_generics_with_defaults = &sig.generics;
 
         quote! {
             #[derive(::yew::Properties)]
-            #vis struct #properties_name #impl_generics #where_clause {
+            #vis struct #properties_name #impl_generics_with_defaults #where_clause {
                 #(#fields)*
                 #phantom
             }
