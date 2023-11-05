@@ -121,6 +121,15 @@ mod private_module {
 
 use private_module::*;
 
+#[::yew_autoprops::autoprops]
+#[::yew::function_component]
+fn CompHtmlResult() -> ::yew::HtmlResult
+{
+    ::std::result::Result::Ok(::yew::html! {
+        <p></p>
+    })
+}
+
 fn compile_pass() {
     let _ = ::yew::html! { <CompUseFnName /> };
     let _ = ::yew::html! { <CompNoProperties /> };
@@ -130,6 +139,7 @@ fn compile_pass() {
     let _ = ::yew::html! { <CompGenerics<::std::primitive::bool, ::yew::AttrValue> b=true a="foo" /> };
     let _ = ::yew::html! { <ConstGenerics<2> xs={[1_u32, 2_u32]} /> };
     let _ = ::yew::html! { <CompPrivateTest b=true /> };
+    let _ = ::yew::html! { <CompHtmlResult /> };
 }
 
 fn main() {}

@@ -149,10 +149,11 @@ impl Autoprops {
                 _ => None,
             })
             .collect::<Vec<_>>();
+        let output = &sig.output;
 
         quote! {
             #(#attrs)*
-            #vis fn #fn_name #impl_generics (#inputs) -> ::yew::Html #where_clause {
+            #vis fn #fn_name #impl_generics (#inputs) #output #where_clause {
                 #(#clones)*
                 #block
             }
