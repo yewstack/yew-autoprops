@@ -221,7 +221,7 @@ impl Autoprops {
 
     fn needs_a_properties_struct(&self) -> bool {
         let syn::ItemFn { sig, .. } = &self.item_fn;
-        !sig.inputs.is_empty() || sig.generics.type_params().next().is_some()
+        !sig.inputs.is_empty()
     }
 }
 
