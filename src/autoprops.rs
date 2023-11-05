@@ -119,18 +119,18 @@ impl Autoprops {
                 .inputs
                 .iter()
                 .filter_map(|arg| match arg {
-                    syn::FnArg::Typed(syn::PatType { pat, .. }) => Some(quote! { #pat }),
+                    syn::FnArg::Typed(syn::PatType { pat, .. }) => Some(quote! { #pat, }),
                     _ => None,
                 })
                 .collect::<Vec<_>>();
             let phantom = sig.generics.type_params().next().is_some().then(|| {
                 quote! {
-                    , phantom: _
+                    phantom: _,
                 }
             });
             quote! {
                 #(#receivers,)* #properties_name {
-                    #(#args),*
+                    #(#args)*
                     #phantom
                 }: &#properties_name #type_generics
             }

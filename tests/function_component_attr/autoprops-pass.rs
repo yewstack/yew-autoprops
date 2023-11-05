@@ -66,6 +66,14 @@ fn comp_no_generics(#[prop_or_default] b: ::std::primitive::bool, a: &::yew::Att
 }
 
 #[::yew_autoprops::autoprops]
+#[::yew::function_component(CompSingleGeneric)]
+fn comp_single_generic<T>() -> ::yew::Html {
+    ::yew::html! {
+        <p></p>
+    }
+}
+
+#[::yew_autoprops::autoprops]
 #[::yew::function_component(CompGenerics)]
 fn comp_generics<T1, T2>(b: T1, a: &T2) -> ::yew::Html
 where
