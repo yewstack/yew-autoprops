@@ -123,8 +123,7 @@ use private_module::*;
 
 #[::yew_autoprops::autoprops]
 #[::yew::function_component]
-fn CompHtmlResult() -> ::yew::HtmlResult
-{
+fn CompHtmlResult() -> ::yew::HtmlResult {
     ::std::result::Result::Ok(::yew::html! {
         <p></p>
     })
@@ -133,7 +132,10 @@ fn CompHtmlResult() -> ::yew::HtmlResult
 #[::yew_autoprops::autoprops]
 #[::yew::function_component]
 fn CompWithDefaultGeneric<T = ()>() -> ::yew::Html
+where
+    T: ::std::default::Default,
 {
+    let _ = T::default();
     ::yew::html! {
         <p></p>
     }
@@ -150,7 +152,7 @@ fn compile_pass() {
     let _ = ::yew::html! { <CompPrivateTest b=true /> };
     let _ = ::yew::html! { <CompHtmlResult /> };
     let _ = ::yew::html! { <CompWithDefaultGeneric /> };
-    let _ = ::yew::html! { <CompWithDefaultGeneric<u32> /> };
+    let _ = ::yew::html! { <CompWithDefaultGeneric<::std::primitive::u32> /> };
 }
 
 fn main() {}
