@@ -1,0 +1,59 @@
+error: function components can't accept a receiver
+ --> tests/function_component_attr/autoprops-fail.rs:6:23
+  |
+6 | fn CantAcceptReceiver(&self, b: bool) -> Html {
+  |                       ^^^^^
+
+error: could not find #[function_component] attribute in function declaration (#[autoprops] must be placed *before* #[function_component])
+  --> tests/function_component_attr/autoprops-fail.rs:13:1
+   |
+13 | fn not_a_function_component(b: bool) -> Html {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: expected a reference to a `Properties` type (try: `&bool`)
+  --> tests/function_component_attr/autoprops-fail.rs:21:25
+   |
+21 | fn wrong_attrs_order(b: bool) -> Html {
+   |                         ^^^^
+
+error: expected identifier, found keyword `let`
+  --> tests/function_component_attr/autoprops-fail.rs:28:22
+   |
+28 | #[function_component(let)]
+   |                      ^^^
+
+error: cannot use `_` as field name
+  --> tests/function_component_attr/autoprops-fail.rs:61:21
+   |
+61 | fn InvalidFieldName(_: u32) -> Html {
+   |                     ^
+
+error[E0277]: the trait bound `NotClonable: Clone` is not satisfied
+  --> tests/function_component_attr/autoprops-fail.rs:40:19
+   |
+38 | #[autoprops]
+   | ------------ required by a bound introduced by this call
+39 | #[function_component]
+40 | fn TypeIsNotClone(stuff: NotClonable) -> Html {
+   |                   ^^^^^ the trait `Clone` is not implemented for `NotClonable`
+   |
+help: consider annotating `NotClonable` with `#[derive(Clone)]`
+   |
+36 | #[derive(Clone)]
+   |
+
+error[E0369]: binary operation `==` cannot be applied to type `NotPartialEq`
+  --> tests/function_component_attr/autoprops-fail.rs:52:30
+   |
+52 | fn TypeIsNotPartialEq(stuff: NotPartialEq) -> Html {
+   |                              ^^^^^^^^^^^^
+   |
+note: an implementation of `PartialEq<_>` might be missing for `NotPartialEq`
+  --> tests/function_component_attr/autoprops-fail.rs:48:1
+   |
+48 | struct NotPartialEq(u32);
+   | ^^^^^^^^^^^^^^^^^^^ must implement `PartialEq<_>`
+help: consider annotating `NotPartialEq` with `#[derive(PartialEq)]`
+   |
+48 | #[derive(PartialEq)]
+   |

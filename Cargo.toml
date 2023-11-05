@@ -23,5 +23,6 @@
 
 
 [dev-dependencies]
-    yew      = { version = "0.21" }
-    trybuild = "1"
+    yew         = { version = "0.21" }
+    trybuild    = "1"
+    rustversion = "1"
