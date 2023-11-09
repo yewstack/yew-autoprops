@@ -600,9 +600,9 @@ dependencies = [
 
 [[package]]
 name = "implicit-clone"
-version = "0.4.5"
+version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "789a53d49d2276908b1fcccb9dfcf65c7a6e884c1df639f26aeff4f142b3ef9e"
+checksum = "7a50fed6f6aa778e7946f697a88e474b4b4a83fb0849cec1ac65fa8e869319dd"
 dependencies = [
  "indexmap",
 ]
@@ -1201,6 +1201,7 @@ dependencies = [
 name = "yew-autoprops"
 version = "0.3.0"
 dependencies = [
+ "implicit-clone",
  "proc-macro2",
  "quote",
  "rustversion",

@@ -23,6 +23,7 @@
 
 
 [dev-dependencies]
-    yew         = { version = "0.21" }
-    trybuild    = "1"
-    rustversion = "1"
+    yew            = { version = "0.21" }
+    implicit-clone = "0.4.6"
+    trybuild       = "1"
+    rustversion    = "1"

@@ -1,72 +1,72 @@
 error: function components can't accept a receiver
- --> tests/function_component_attr/autoprops-fail.rs:6:23
+ --> tests/function_component_attr/autoprops-fail.rs:7:23
   |
-6 | fn CantAcceptReceiver(&self, b: bool) -> Html {
+7 | fn CantAcceptReceiver(&self, b: bool) -> Html {
   |                       ^^^^^
 
 error: could not find #[function_component] attribute in function declaration (#[autoprops] must be placed *before* #[function_component])
-  --> tests/function_component_attr/autoprops-fail.rs:13:1
+  --> tests/function_component_attr/autoprops-fail.rs:14:1
    |
-13 | fn not_a_function_component(b: bool) -> Html {
+14 | fn not_a_function_component(b: bool) -> Html {
    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 error: expected a reference to a `Properties` type (try: `&bool`)
-  --> tests/function_component_attr/autoprops-fail.rs:21:25
+  --> tests/function_component_attr/autoprops-fail.rs:22:25
    |
-21 | fn wrong_attrs_order(b: bool) -> Html {
+22 | fn wrong_attrs_order(b: bool) -> Html {
    |                         ^^^^
 
 error: expected identifier, found keyword `let`
-  --> tests/function_component_attr/autoprops-fail.rs:28:22
+  --> tests/function_component_attr/autoprops-fail.rs:29:22
    |
-28 | #[function_component(let)]
+29 | #[function_component(let)]
    |                      ^^^
 
 error: cannot use `_` as field name
-  --> tests/function_component_attr/autoprops-fail.rs:61:21
+  --> tests/function_component_attr/autoprops-fail.rs:64:21
    |
-61 | fn InvalidFieldName(_: u32) -> Html {
+64 | fn InvalidFieldName(_: u32) -> Html {
    |                     ^
 
 error[E0412]: cannot find type `CompPrivateTest` in this scope
-  --> tests/function_component_attr/autoprops-fail.rs:83:22
+  --> tests/function_component_attr/autoprops-fail.rs:86:22
    |
-83 |     let _ = html! { <CompPrivateTest /> };
+86 |     let _ = html! { <CompPrivateTest /> };
    |                      ^^^^^^^^^^^^^^^ not found in this scope
    |
 note: struct `crate::private_module::CompPrivateTest` exists but is inaccessible
-  --> tests/function_component_attr/autoprops-fail.rs:69:5
+  --> tests/function_component_attr/autoprops-fail.rs:72:5
    |
-69 |     #[::yew::function_component(CompPrivateTest)]
+72 |     #[::yew::function_component(CompPrivateTest)]
    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
    = note: this error originates in the attribute macro `::yew::function_component` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0277]: the trait bound `NotClonable: Clone` is not satisfied
-  --> tests/function_component_attr/autoprops-fail.rs:40:19
+error[E0277]: the trait bound `NotClonable: ImplicitClone` is not satisfied
+  --> tests/function_component_attr/autoprops-fail.rs:41:19
    |
-38 | #[autoprops]
+39 | #[autoprops]
    | ------------ required by a bound introduced by this call
-39 | #[function_component]
-40 | fn TypeIsNotClone(stuff: NotClonable) -> Html {
-   |                   ^^^^^ the trait `Clone` is not implemented for `NotClonable`
+40 | #[function_component]
+41 | fn TypeIsNotClone(stuff: NotClonable) -> Html {
+   |                   ^^^^^ expected an implementor of trait `ImplicitClone`
    |
-help: consider annotating `NotClonable` with `#[derive(Clone)]`
+help: consider borrowing here
    |
-36 | #[derive(Clone)]
-   |
+41 | fn TypeIsNotClone(&stuff: NotClonable) -> Html {
+   |                   +
 
 error[E0369]: binary operation `==` cannot be applied to type `NotPartialEq`
-  --> tests/function_component_attr/autoprops-fail.rs:52:30
+  --> tests/function_component_attr/autoprops-fail.rs:55:30
    |
-52 | fn TypeIsNotPartialEq(stuff: NotPartialEq) -> Html {
+55 | fn TypeIsNotPartialEq(stuff: NotPartialEq) -> Html {
    |                              ^^^^^^^^^^^^
    |
 note: an implementation of `PartialEq<_>` might be missing for `NotPartialEq`
-  --> tests/function_component_attr/autoprops-fail.rs:48:1
+  --> tests/function_component_attr/autoprops-fail.rs:49:1
    |
-48 | struct NotPartialEq(u32);
+49 | struct NotPartialEq(u32);
    | ^^^^^^^^^^^^^^^^^^^ must implement `PartialEq<_>`
 help: consider annotating `NotPartialEq` with `#[derive(PartialEq)]`
    |
-48 | #[derive(PartialEq)]
+49 | #[derive(PartialEq)]
    |

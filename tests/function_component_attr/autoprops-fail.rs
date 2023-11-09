@@ -1,4 +1,5 @@
 use yew::prelude::*;
+use yew::html::ImplicitClone;
 use yew_autoprops::*;
 
 #[autoprops]
@@ -46,6 +47,8 @@ fn TypeIsNotClone(stuff: NotClonable) -> Html {
 
 #[derive(Clone)]
 struct NotPartialEq(u32);
+
+impl ImplicitClone for NotPartialEq {}
 
 #[autoprops]
 #[function_component]

@@ -77,7 +77,7 @@ fn comp_single_generic<T>() -> ::yew::Html {
 #[::yew::function_component(CompGenerics)]
 fn comp_generics<T1, T2>(b: T1, a: &T2) -> ::yew::Html
 where
-    T1: ::std::cmp::PartialEq + ::std::clone::Clone,
+    T1: ::std::cmp::PartialEq + ::implicit_clone::ImplicitClone,
     T2: ::std::cmp::PartialEq,
 {
     let _: T1 = b;

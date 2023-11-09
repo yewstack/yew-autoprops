@@ -141,7 +141,9 @@ impl Autoprops {
                 syn::FnArg::Typed(syn::PatType { pat, ty, .. })
                     if !matches!(**ty, syn::Type::Reference(_)) =>
                 {
-                    Some(quote! { let #pat = ::std::clone::Clone::clone(#pat); })
+                    Some(quote! {
+                        let #pat = ::implicit_clone::ImplicitClone::implicit_clone(#pat);
+                    })
                 }
                 _ => None,
             })
