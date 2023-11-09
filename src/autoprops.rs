@@ -142,7 +142,7 @@ impl Autoprops {
                     if !matches!(**ty, syn::Type::Reference(_)) =>
                 {
                     Some(quote! {
-                        let #pat = ::implicit_clone::ImplicitClone::implicit_clone(#pat);
+                        let #pat = ::yew::html::ImplicitClone::implicit_clone(#pat);
                     })
                 }
                 _ => None,
