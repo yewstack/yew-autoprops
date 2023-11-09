@@ -3,7 +3,6 @@ mod function_component;
 
 use quote::ToTokens;
 
-//#[proc_macro_error::proc_macro_error]
 #[proc_macro_attribute]
 pub fn autoprops(
     attr: proc_macro::TokenStream,
