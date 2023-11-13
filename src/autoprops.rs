@@ -26,42 +26,23 @@ impl syn::parse::Parse for Autoprops {
 
         let mut component_name = item_fn.sig.ident.clone();
 
-        attrs
-            .iter()
-            .find(|attr| {
-                match &attr.meta {
-                    syn::Meta::Path(path) => {
-                        if let Some(last_segment) = path.segments.last() {
-                            if last_segment.ident == "function_component" {
-                                return true;
-                            }
-                        }
-                    }
-                    syn::Meta::List(syn::MetaList { path, tokens, .. }) => {
-                        if let Some(last_segment) = path.segments.last() {
-                            if last_segment.ident == "function_component" {
-                                if let Ok(attr) =
-                                    syn::parse2::<FunctionComponentName>(tokens.clone())
-                                {
-                                    if let Some(name) = attr.component_name {
-                                        component_name = name;
-                                    }
+        for attr in attrs {
+            match &attr.meta {
+                syn::Meta::List(syn::MetaList { path, tokens, .. }) => {
+                    if let Some(last_segment) = path.segments.last() {
+                        if last_segment.ident == "function_component" {
+                            if let Ok(attr) = syn::parse2::<FunctionComponentName>(tokens.clone()) {
+                                if let Some(name) = attr.component_name {
+                                    component_name = name;
                                 }
-                                return true;
                             }
+                            break;
                         }
                     }
-                    _ => {}
                 }
-                false
-            })
-            .ok_or_else(|| {
-                syn::Error::new_spanned(
-                    sig,
-                    "could not find #[function_component] attribute in function declaration \
-                     (#[autoprops] must be placed *before* #[function_component])",
-                )
-            })?;
+                _ => {}
+            }
+        }
 
         for input in &sig.inputs {
             if let syn::FnArg::Typed(syn::PatType { pat, .. }) = input {

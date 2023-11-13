@@ -10,13 +10,6 @@ fn CantAcceptReceiver(&self, b: bool) -> Html {
     }
 }
 
-#[autoprops]
-fn not_a_function_component(b: bool) -> Html {
-    html! {
-        <p>{b}</p>
-    }
-}
-
 #[function_component(WrongAttrsOrder)]
 #[autoprops]
 fn wrong_attrs_order(b: bool) -> Html {
