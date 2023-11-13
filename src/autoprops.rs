@@ -122,7 +122,7 @@ impl Autoprops {
                 .collect::<Vec<_>>();
             let phantom = sig.generics.type_params().next().is_some().then(|| {
                 quote! {
-                    phantom: _,
+                    __yew_autoprops_phantom: _,
                 }
             });
             quote! {
@@ -190,7 +190,7 @@ impl Autoprops {
         let phantom = (!type_params.is_empty()).then(|| {
             quote! {
                 #[prop_or_default]
-                #vis phantom: ::std::marker::PhantomData <( #(#type_params),* )>,
+                #vis __yew_autoprops_phantom: ::std::marker::PhantomData <( #(#type_params),* )>,
             }
         });
         let fields_eq = sig
