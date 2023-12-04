@@ -10,10 +10,11 @@ No more extra one-off Props structs!
 # Examples
 
 ```rust
-use yew_autoprops::autoprops_component;
+use yew_autoprops::autoprops;
 use yew::prelude::*;
 
-#[autoprops_component]
+#[autoprops]
+#[function_component]
 fn CoolComponent(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
     html! {
         <div class={classes!(hidden.then_some("hidden"))}>
@@ -24,10 +25,11 @@ fn CoolComponent(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
 ```
 
 ```rust
-use yew_autoprops::autoprops_component;
+use yew_autoprops::autoprops;
 use yew::prelude::*;
 
-#[autoprops_component(CoolComponent)]
+#[autoprops(CoolComponentProps)]
+#[function_component(CoolComponent)]
 fn cool_component(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
     html! {
         <div class={classes!(hidden.then_some("hidden"))}>

@@ -1,0 +1,66 @@
+error: function components can't accept a receiver
+ --> tests/function_component_attr/autoprops-fail.rs:7:23
+  |
+7 | fn CantAcceptReceiver(&self, b: bool) -> Html {
+  |                       ^^^^^
+
+error: expected a reference to a `Properties` type (try: `&bool`)
+  --> tests/function_component_attr/autoprops-fail.rs:15:25
+   |
+15 | fn wrong_attrs_order(b: bool) -> Html {
+   |                         ^^^^
+
+error: expected identifier, found keyword `let`
+  --> tests/function_component_attr/autoprops-fail.rs:22:22
+   |
+22 | #[function_component(let)]
+   |                      ^^^
+
+error: cannot use `_` as field name
+  --> tests/function_component_attr/autoprops-fail.rs:57:21
+   |
+57 | fn InvalidFieldName(_: u32) -> Html {
+   |                     ^
+
+error[E0412]: cannot find type `CompPrivateTest` in this scope
+  --> tests/function_component_attr/autoprops-fail.rs:79:22
+   |
+79 |     let _ = html! { <CompPrivateTest /> };
+   |                      ^^^^^^^^^^^^^^^ not found in this scope
+   |
+note: struct `crate::private_module::CompPrivateTest` exists but is inaccessible
+  --> tests/function_component_attr/autoprops-fail.rs:65:5
+   |
+65 |     #[::yew::function_component(CompPrivateTest)]
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not accessible
+   = note: this error originates in the attribute macro `::yew::function_component` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `NotClonable: ImplicitClone` is not satisfied
+  --> tests/function_component_attr/autoprops-fail.rs:34:19
+   |
+32 | #[autoprops]
+   | ------------ required by a bound introduced by this call
+33 | #[function_component]
+34 | fn TypeIsNotClone(stuff: NotClonable) -> Html {
+   |                   ^^^^^ expected an implementor of trait `ImplicitClone`
+   |
+help: consider borrowing here
+   |
+34 | fn TypeIsNotClone(&stuff: NotClonable) -> Html {
+   |                   +
+
+error[E0369]: binary operation `==` cannot be applied to type `NotPartialEq`
+  --> tests/function_component_attr/autoprops-fail.rs:48:30
+   |
+48 | fn TypeIsNotPartialEq(stuff: NotPartialEq) -> Html {
+   |                              ^^^^^^^^^^^^
+   |
+note: an implementation of `PartialEq<_>` might be missing for `NotPartialEq`
+  --> tests/function_component_attr/autoprops-fail.rs:42:1
+   |
+42 | struct NotPartialEq(u32);
+   | ^^^^^^^^^^^^^^^^^^^ must implement `PartialEq<_>`
+help: consider annotating `NotPartialEq` with `#[derive(PartialEq)]`
+   |
+42 | #[derive(PartialEq)]
+   |
