@@ -120,7 +120,10 @@ impl Autoprops {
             .iter()
             .filter_map(|arg| match arg {
                 syn::FnArg::Typed(syn::PatType { pat, ty, .. })
-                    if !matches!(**ty, syn::Type::Reference(_)) =>
+                    if !matches!(
+                        **ty,
+                        syn::Type::Reference(syn::TypeReference { lifetime: None, .. })
+                    ) =>
                 {
                     Some(quote! {
                         let #pat = ::yew::html::ImplicitClone::implicit_clone(#pat);
@@ -155,9 +158,11 @@ impl Autoprops {
             .iter()
             .filter_map(|arg| match arg {
                 syn::FnArg::Typed(syn::PatType { attrs, pat, ty, .. }) => match ty.as_ref() {
-                    syn::Type::Reference(syn::TypeReference { elem, .. }) => {
-                        Some(quote! { #(#attrs)* #vis #pat: #elem, })
-                    }
+                    syn::Type::Reference(syn::TypeReference {
+                        elem,
+                        lifetime: None,
+                        ..
+                    }) => Some(quote! { #(#attrs)* #vis #pat: #elem, }),
                     _ => Some(quote! { #(#attrs)* #vis #pat: #ty, }),
                 },
                 _ => None,

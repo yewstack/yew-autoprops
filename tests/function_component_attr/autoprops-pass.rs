@@ -141,6 +141,13 @@ where
     }
 }
 
+#[::yew_autoprops::autoprops]
+#[::yew::function_component]
+fn CompWithIntendedRef(s: &'static ::std::primitive::str) -> ::yew::Html {
+    let _ = s;
+    ::yew::html! {}
+}
+
 fn compile_pass() {
     let _ = ::yew::html! { <CompUseFnName /> };
     let _ = ::yew::html! { <CompNoProperties /> };
@@ -153,6 +160,7 @@ fn compile_pass() {
     let _ = ::yew::html! { <CompHtmlResult /> };
     let _ = ::yew::html! { <CompWithDefaultGeneric /> };
     let _ = ::yew::html! { <CompWithDefaultGeneric<::std::primitive::u32> /> };
+    let _ = ::yew::html! { <CompWithIntendedRef s="foo" /> };
 }
 
 fn main() {}
