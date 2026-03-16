@@ -1,43 +1,5 @@
-#![no_implicit_prelude]
-
-// Shadow primitives
-#[allow(non_camel_case_types)]
-pub struct bool;
-#[allow(non_camel_case_types)]
-pub struct char;
-#[allow(non_camel_case_types)]
-pub struct f32;
-#[allow(non_camel_case_types)]
-pub struct f64;
-#[allow(non_camel_case_types)]
-pub struct i128;
-#[allow(non_camel_case_types)]
-pub struct i16;
-#[allow(non_camel_case_types)]
-pub struct i32;
-#[allow(non_camel_case_types)]
-pub struct i64;
-#[allow(non_camel_case_types)]
-pub struct i8;
-#[allow(non_camel_case_types)]
-pub struct isize;
-#[allow(non_camel_case_types)]
-pub struct str;
-#[allow(non_camel_case_types)]
-pub struct u128;
-#[allow(non_camel_case_types)]
-pub struct u16;
-#[allow(non_camel_case_types)]
-pub struct u32;
-#[allow(non_camel_case_types)]
-pub struct u64;
-#[allow(non_camel_case_types)]
-pub struct u8;
-#[allow(non_camel_case_types)]
-pub struct usize;
-
 #[::yew_autoprops::autoprops]
-#[::yew::function_component]
+#[::yew::component]
 fn CompUseFnName() -> ::yew::Html
 {
     ::yew::html! {
@@ -46,7 +8,7 @@ fn CompUseFnName() -> ::yew::Html
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component(CompNoProperties)]
+#[::yew::component(CompNoProperties)]
 fn comp_no_properties() -> ::yew::Html
 {
     ::yew::html! {
@@ -55,7 +17,7 @@ fn comp_no_properties() -> ::yew::Html
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component(CompNoGenerics)]
+#[::yew::component(CompNoGenerics)]
 fn comp_no_generics(#[prop_or_default] b: ::std::primitive::bool, a: &::yew::AttrValue) -> ::yew::Html
 {
     let _: ::std::primitive::bool = b;
@@ -66,7 +28,7 @@ fn comp_no_generics(#[prop_or_default] b: ::std::primitive::bool, a: &::yew::Att
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component(CompSingleGeneric)]
+#[::yew::component(CompSingleGeneric)]
 fn comp_single_generic<T>() -> ::yew::Html {
     ::yew::html! {
         <p></p>
@@ -74,7 +36,7 @@ fn comp_single_generic<T>() -> ::yew::Html {
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component(CompGenerics)]
+#[::yew::component(CompGenerics)]
 fn comp_generics<T1, T2>(b: T1, a: &T2) -> ::yew::Html
 where
     T1: ::std::cmp::PartialEq + ::implicit_clone::ImplicitClone,
@@ -88,7 +50,7 @@ where
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component(CompGenericsWithoutField)]
+#[::yew::component(CompGenericsWithoutField)]
 fn comp_generics_without_field<T1, T2>(b: ::std::primitive::bool) -> ::yew::Html {
     let _ = b;
     ::yew::html! {
@@ -97,7 +59,7 @@ fn comp_generics_without_field<T1, T2>(b: ::std::primitive::bool) -> ::yew::Html
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component(ConstGenerics)]
+#[::yew::component(ConstGenerics)]
 fn const_generics<const N: ::std::primitive::usize>(xs: [::std::primitive::u32; N]) -> ::yew::Html {
     let _: [::std::primitive::u32; N] = xs;
     ::yew::html! {
@@ -109,7 +71,7 @@ fn const_generics<const N: ::std::primitive::usize>(xs: [::std::primitive::u32; 
 
 mod private_module {
     #[::yew_autoprops::autoprops]
-    #[::yew::function_component(CompPrivateTest)]
+    #[::yew::component(CompPrivateTest)]
     pub fn comp_private_test(#[prop_or_default] b: ::std::primitive::bool) -> ::yew::Html
     {
         let _: ::std::primitive::bool = b;
@@ -122,7 +84,7 @@ mod private_module {
 use private_module::*;
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component]
+#[::yew::component]
 fn CompHtmlResult() -> ::yew::HtmlResult {
     ::std::result::Result::Ok(::yew::html! {
         <p></p>
@@ -130,7 +92,7 @@ fn CompHtmlResult() -> ::yew::HtmlResult {
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component]
+#[::yew::component]
 fn CompWithDefaultGeneric<T = ()>() -> ::yew::Html
 where
     T: ::std::default::Default,

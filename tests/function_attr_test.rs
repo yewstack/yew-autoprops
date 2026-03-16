@@ -6,7 +6,7 @@ fn tests_pass() {
 }
 
 #[allow(dead_code)]
-#[rustversion::attr(stable(1.64), test)]
+#[rustversion::attr(stable(1.84), test)]
 fn tests_fail() {
     let t = trybuild::TestCases::new();
     t.compile_fail("tests/function_component_attr/*-fail.rs");

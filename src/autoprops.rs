@@ -27,20 +27,19 @@ impl syn::parse::Parse for Autoprops {
         let mut component_name = item_fn.sig.ident.clone();
 
         for attr in attrs {
-            match &attr.meta {
-                syn::Meta::List(syn::MetaList { path, tokens, .. }) => {
-                    if let Some(last_segment) = path.segments.last() {
-                        if last_segment.ident == "function_component" {
-                            if let Ok(attr) = syn::parse2::<FunctionComponentName>(tokens.clone()) {
-                                if let Some(name) = attr.component_name {
-                                    component_name = name;
-                                }
+            if let syn::Meta::List(syn::MetaList { path, tokens, .. }) = &attr.meta {
+                if let Some(last_segment) = path.segments.last() {
+                    if last_segment.ident == "component"
+                        || last_segment.ident == "function_component"
+                    {
+                        if let Ok(attr) = syn::parse2::<FunctionComponentName>(tokens.clone()) {
+                            if let Some(name) = attr.component_name {
+                                component_name = name;
                             }
-                            break;
                         }
+                        break;
                     }
                 }
-                _ => {}
             }
         }
 
