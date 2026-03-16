@@ -3,14 +3,14 @@ use yew::html::ImplicitClone;
 use yew_autoprops::*;
 
 #[autoprops]
-#[function_component]
+#[component]
 fn CantAcceptReceiver(&self, b: bool) -> Html {
     html! {
         <p>{b}</p>
     }
 }
 
-#[function_component(WrongAttrsOrder)]
+#[component(WrongAttrsOrder)]
 #[autoprops]
 fn wrong_attrs_order(b: bool) -> Html {
     html! {
@@ -19,7 +19,7 @@ fn wrong_attrs_order(b: bool) -> Html {
 }
 
 #[autoprops]
-#[function_component(let)]
+#[component(let)]
 fn BadFunctionComponent(b: bool) -> Html {
     html! {
         <p>{b}</p>
@@ -30,7 +30,7 @@ fn BadFunctionComponent(b: bool) -> Html {
 struct NotClonable(u32);
 
 #[autoprops]
-#[function_component]
+#[component]
 fn TypeIsNotClone(stuff: NotClonable) -> Html {
     drop(stuff);
     html! {
@@ -44,7 +44,7 @@ struct NotPartialEq(u32);
 impl ImplicitClone for NotPartialEq {}
 
 #[autoprops]
-#[function_component]
+#[component]
 fn TypeIsNotPartialEq(stuff: NotPartialEq) -> Html {
     drop(stuff);
     html! {
@@ -53,7 +53,7 @@ fn TypeIsNotPartialEq(stuff: NotPartialEq) -> Html {
 }
 
 #[autoprops]
-#[function_component]
+#[component]
 fn InvalidFieldName(_: u32) -> Html {
     html! {
         <p></p>
@@ -62,7 +62,7 @@ fn InvalidFieldName(_: u32) -> Html {
 
 mod private_module {
     #[::yew_autoprops::autoprops]
-    #[::yew::function_component(CompPrivateTest)]
+    #[::yew::component(CompPrivateTest)]
     fn comp_private_test(#[prop_or_default] b: ::std::primitive::bool) -> ::yew::Html
     {
         let _: ::std::primitive::bool = b;

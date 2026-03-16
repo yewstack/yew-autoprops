@@ -14,7 +14,7 @@ use yew_autoprops::autoprops;
 use yew::prelude::*;
 
 #[autoprops]
-#[function_component]
+#[component]
 fn CoolComponent(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
     html! {
         <div class={classes!(hidden.then_some("hidden"))}>
@@ -29,7 +29,7 @@ use yew_autoprops::autoprops;
 use yew::prelude::*;
 
 #[autoprops(CoolComponentProps)]
-#[function_component(CoolComponent)]
+#[component(CoolComponent)]
 fn cool_component(#[prop_or_default] hidden: bool, smth: &AttrValue) -> Html {
     html! {
         <div class={classes!(hidden.then_some("hidden"))}>
