@@ -1,4 +1,5 @@
 // copy-pasted from yew-macro because proc-macro crates cannot export any items
+// TODO separate yew's macros into their own library common for yew-macro and yew-autoprops
 
 use syn::parse::{Parse, ParseStream};
 use syn::Ident;
