@@ -104,7 +104,7 @@ where
 }
 
 #[::yew_autoprops::autoprops]
-#[::yew::function_component]
+#[::yew::component]
 fn CompWithIntendedRef(s: &'static ::std::primitive::str) -> ::yew::Html {
     let _ = s;
     ::yew::html! {}
