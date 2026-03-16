@@ -11,7 +11,7 @@
     categories    = ["gui", "web-programming", "wasm"]
     description   = "proc-macro to automatically derive Properties structs from args for Yew components"
     exclude       = [".github/workflows/*"]
-    rust-version  = "1.64.0"
+    rust-version  = "1.84.0"
 
 [lib]
     proc-macro = true
@@ -23,7 +23,7 @@
 
 
 [dev-dependencies]
-    yew            = { version = "0.21" }
-    implicit-clone = "0.4.6"
+    yew            = { version = "0.23" }
+    implicit-clone = "0.6"
     trybuild       = "1"
     rustversion    = "1"
